@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>用户注册</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.min.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <h1 class="col-xs-12"><span class="text-center text-primary col-xs-12">用户注册</span></h1>
+
+            <div class="col-xs-12">
+                <form class="form-horizontal" method="post" action="user/register.do" id="registerForm">
+                    <div class="form-group">
+                        <label for="email" class="col-xs-4 control-label">邮箱：</label>
+                        <div class="col-xs-6">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="请输入电子邮箱">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-xs-4 control-label">密码：</label>
+                        <div class="col-xs-6">
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirm" class="col-xs-4 control-label">确认密码：</label>
+                        <div class="col-xs-6">
+                            <input type="password" class="form-control" id="password_confirm" name="password_confirm"
+                                   placeholder="请再次输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="realname" class="col-xs-4 control-label">姓名：</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" id="realname" name="name" placeholder="请输入姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="department" class="col-xs-4 control-label">班级（部门）：</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" id="department" name="department"
+                                   placeholder="请输入班级（部门）">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6 col-sm-offset-4 col-xs-12">
+                            <button type="submit" class="btn btn-default btn-primary col-xs-5" id="btn-submit" data-loading-text="注册中...">
+                                注册
+                            </button>
+                            <a class="btn btn-default col-xs-offset-2 col-xs-5" id="btn-reset">重置
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

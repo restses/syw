@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理·阅卷</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/correct.js"></script>
+    <link type="text/css" href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="../../css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="top-bar" class="col-xs-12">
+            <div class="col-lg-4 col-lg-offset-8 col-sm-7 col-sm-offset-5 col-md-5 col-md-offset-7 col-xs-12"
+                 id="top-bar-link">
+                <span style="cursor:pointer" onclick="javascript:window.open('../../index.html')">前台首页</span>
+                <span style="cursor:pointer" onclick="javascript:window.open('../manager.html','_self')">后台首页</span>
+                <span>当前用户：</span>
+                <span id="currentUser">Loading...</span>
+                <span id="logout" style="cursor:pointer">退出</span>
+            </div>
+        </div>
+
+        <div class="col-xs-12" id="head-bar">
+            <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="text-center">OEXAME·后台管理</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12" style="margin-top: 20px;">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>试卷批阅</span></h3>
+            <hr/>
+        </div>
+        <div class="form-inline text-center">
+            <div class="form-group">
+                <label for="paperId">考试编号：</label>
+                <input type="text" id="paperId" name="id" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="paperTitle">考试名称：</label>
+                <input id="paperTitle" name="title" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <a href="javascript:getExamList();" class="btn btn-default btn-primary">搜索</a>
+                <a href="javascript:restChose();" class="btn btn-default">重置</a>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px" class="col-xs-12">
+
+            <div class="alert alert-info col-xs-12 text-center" role="alert" id="delete-ing" style="display: none">
+                删除中...
+            </div>
+            <div class="alert alert-success col-xs-12 text-center" role="alert" id="delete-success"
+                 style="display: none">删除成功
+            </div>
+            <div class="alert alert-danger col-xs-12 text-center" role="alert" id="delete-fail" style="display: none">
+                删除失败
+            </div>
+
+            <table class="table table-bordered table-hover" style='table-layout:fixed;' id="examList">
+                <thead>
+                <tr>
+                    <th width="10%">考试编号</th>
+                    <th width="30%">考试名称</th>
+                    <th width="20%">开始时间</th>
+                    <th width="20%">结束时间</th>
+                    <th width="10%">考生列表</th>
+                    <th width="10%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+            <div class="pull-right">
+                <label><span id="page">0</span>/<span id="totalPage">0</span></label>
+                <a href="javascript:pagePrevious()" aria-label="Previous" class="btn btn-default">
+                    <span aria-hidden="true" class="glyphicon glyphicon-menu-left"></span>
+                </a>
+                <a href="javascript:pageNext()" aria-label="Next" class="btn btn-default">
+                    <span aria-hidden="true" class="glyphicon glyphicon-menu-right"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

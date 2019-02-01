@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hsong.oexam.dao.PaperMapper">
+  <resultMap id="BaseResultMap" type="xyz.hsong.oexam.pojo.Paper">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="title" jdbcType="VARCHAR" property="title"/>
+    <result column="time" jdbcType="INTEGER" property="time"/>
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <resultMap id="PaperQuestionVoMap" type="xyz.hsong.oexam.vo.PaperQuestionVo">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="ask" jdbcType="LONGVARCHAR" property="ask"/>
+    <result column="analysis" jdbcType="LONGVARCHAR" property="analysis"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="status" jdbcType="INTEGER" property="status"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="score" jdbcType="INTEGER" property="score"/>
+    <collection property="options" javaType="ArrayList" ofType="xyz.hsong.oexam.pojo.Option">
+      <id column="option_id" jdbcType="BIGINT" property="id"/>
+      <result column="question_id" jdbcType="BIGINT" property="questionId"/>
+      <result column="content" jdbcType="VARCHAR" property="content"/>
+      <result column="answer" jdbcType="INTEGER" property="answer"/>
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, title, `time`, start_time, end_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from paper
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from paper
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="xyz.hsong.oexam.pojo.Paper" useGeneratedKeys="true" keyProperty="id">
+    insert into paper (id, title, `time`,
+      start_time, end_time, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="xyz.hsong.oexam.pojo.Paper" useGeneratedKeys="true" keyProperty="id">
+    insert into paper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      create_time,
+      update_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      now(),
+      now(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.hsong.oexam.pojo.Paper">
+    update paper
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      update_time = now(),
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xyz.hsong.oexam.pojo.Paper">
+    update paper
+    set title     = #{title,jdbcType=VARCHAR},
+      `time`      = #{time,jdbcType=INTEGER},
+      start_time  = #{startTime,jdbcType=TIMESTAMP},
+      end_time    = #{endTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectPaperList" parameterType="map" resultType="xyz.hsong.oexam.pojo.Paper">
+    select
+    <include refid="Base_Column_List"/>
+    from oexam.paper
+    order by id desc
+    limit #{start},#{offset}
+  </select>
+
+  <select id="selectPaperQuestionList" parameterType="long" resultMap="PaperQuestionVoMap">
+    select
+      oexam.paper_detail.question_id id,
+      oexam.paper_detail.score,
+      oexam.question.ask,
+      oexam.question.analysis,
+      oexam.question.type,
+      oexam.question.status,
+      oexam.question.create_time,
+      oexam.question.update_time,
+      `option`.id                    option_id,
+      `option`.question_id,
+      `option`.content,
+      `option`.answer
+    from oexam.paper_detail
+      inner join oexam.question on paper_detail.question_id = question.id
+      left join oexam.`option` on paper_detail.question_id = `option`.question_id
+    where paper_detail.paper_id = #{paperId}
+  </select>
+
+  <select id="selectPapers" parameterType="xyz.hsong.oexam.pojo.Paper" resultType="xyz.hsong.oexam.pojo.Paper">
+    select
+    <include refid="Base_Column_List"/>
+    from oexam.paper
+    <where>
+      <if test="pager.id != null">
+        and id= #{pager.id}
+      </if>
+      <if test="pager.title != null">
+        and title like concat('%',#{pager.title},'%')
+      </if>
+    </where>
+    limit #{start},#{offset}
+  </select>
+
+  <select id="selectUserPaperList" parameterType="map" resultType="xyz.hsong.oexam.vo.PaperStatusVo">
+    select
+      paper.id,
+      paper.title,
+      paper.time,
+      paper.start_time,
+      paper.end_time,
+      exam_user.`status`,
+      paper.create_time,
+      paper.update_time
+    from oexam.paper
+      inner join oexam.exam_user on paper.id = exam_user.paper_id
+    where exam_user.user_id = #{userId}
+    order by oexam.paper.id desc
+    limit #{start}, #{offset}
+  </select>
+
+  <select id="selectUserPaperListCount" parameterType="long" resultType="int">
+    select count(1)
+    from oexam.paper
+      inner join oexam.exam_user on paper.id = exam_user.paper_id
+    where exam_user.user_id = #{userId}
+  </select>
+
+  <select id="selectPaperCount" parameterType="xyz.hsong.oexam.pojo.Paper" resultType="int">
+    select count(1)
+    from oexam.paper
+    <where>
+      <if test="id != null">
+        and id= #{id}
+      </if>
+      <if test="title != null">
+        and title like concat('%',#{title},'%')
+      </if>
+    </where>
+  </select>
+
+</mapper>

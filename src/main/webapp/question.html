@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+</body>
+<script>
+
+    var json = "{\n" +
+        "    \"type\": \"单选题\",\n" +
+        "    \"ask\": \"问题\",\n" +
+        "    \"select\": [\n" +
+        "        {\n" +
+        "            \"i\": \"A\",\n" +
+        "            \"s\": \"选项A\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"i\": \"B\",\n" +
+        "            \"s\": \"选项B\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"i\": \"C\",\n" +
+        "            \"s\": \"选项C\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"i\": \"D\",\n" +
+        "            \"s\": \"选项D\"\n" +
+        "        }\n" +
+        "    ]\n" +
+        "}"
+        
+    var question = JSON.parse(json);
+    var body = $("body");
+    var select = question.select;
+    for (var j = 0; j < select.length; j++) {
+        body.append(select[j].i + ":" + select[j].s + "<br/>");
+    }
+</script>
+</html>

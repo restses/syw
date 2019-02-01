@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hsong.oexam.dao.OptionMapper">
+  <resultMap id="BaseResultMap" type="xyz.hsong.oexam.pojo.Option">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="question_id" jdbcType="BIGINT" property="questionId"/>
+    <result column="content" jdbcType="VARCHAR" property="content"/>
+    <result column="answer" jdbcType="INTEGER" property="answer"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, question_id, content, answer
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `option`
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from `option`
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="xyz.hsong.oexam.pojo.Option" useGeneratedKeys="true" keyProperty="id">
+    insert into `option` (id, question_id, content,
+      answer)
+    values (#{id,jdbcType=BIGINT}, #{questionId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="xyz.hsong.oexam.pojo.Option" useGeneratedKeys="true" keyProperty="id">
+    insert into `option`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="answer != null">
+        answer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.hsong.oexam.pojo.Option">
+    update `option`
+    <set>
+      <if test="questionId != null">
+        question_id = #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        answer = #{answer,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xyz.hsong.oexam.pojo.Option">
+    update `option`
+    set question_id = #{questionId,jdbcType=BIGINT},
+      content       = #{content,jdbcType=VARCHAR},
+      answer        = #{answer,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="insertOptions" parameterType="list" keyProperty="id" useGeneratedKeys="true">
+    insert into oexam.`option`(question_id, content, answer) values
+    <foreach collection="options" item="item" separator=",">
+      (#{questionId},#{item.content},#{item.answer})
+    </foreach>
+  </insert>
+
+  <update id="updateOptions" parameterType="list">
+    <foreach collection="options" item="item" separator=";">
+      update oexam.`option`
+      <set>
+        <if test="item.content != null">
+          content = #{item.content},
+        </if>
+        <if test="item.answer != null">
+          answer = #{item.answer},
+        </if>
+      </set>
+      where id = #{item.id}
+    </foreach>
+  </update>
+
+  <delete id="deleteByQuestionId" parameterType="long">
+    delete from oexam.`option`
+    where question_id = #{question}
+  </delete>
+
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hsong.oexam.dao.ExamUserMapper">
+  <resultMap id="BaseResultMap" type="xyz.hsong.oexam.pojo.ExamUser">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    <result column="paper_id" jdbcType="BIGINT" property="paperId"/>
+    <result column="status" jdbcType="INTEGER" property="status"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, paper_id, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from exam_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from exam_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="xyz.hsong.oexam.pojo.ExamUser">
+    insert into exam_user (id, user_id, paper_id, 
+      status)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{paperId,jdbcType=BIGINT}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="xyz.hsong.oexam.pojo.ExamUser">
+    insert into exam_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="paperId != null">
+        paper_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="paperId != null">
+        #{paperId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateStatus" parameterType="xyz.hsong.oexam.pojo.ExamUser">
+    update exam_user
+    set
+      `status` = #{status,jdbcType=INTEGER}
+
+    where user_id = #{userId,jdbcType=BIGINT} and paper_id = #{paperId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xyz.hsong.oexam.pojo.ExamUser">
+    update exam_user
+    set user_id = #{userId,jdbcType=BIGINT},
+      paper_id  = #{paperId,jdbcType=BIGINT},
+      status    = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <delete id="deleteExamUser" parameterType="long">
+    delete from oexam.exam_user
+    where paper_id = #{paperId} and user_id = #{userId}
+  </delete>
+
+  <select id="selectExamUserList" parameterType="map" resultType="xyz.hsong.oexam.pojo.ExamUser">
+    select
+    <include refid="Base_Column_List"/>
+    from oexam.exam_user
+    where paper_id=#{paperId}
+    limit #{start},#{offset}
+  </select>
+
+  <select id="selectExamUserStatus" parameterType="map" resultType="int">
+    select `status`
+    from oexam.exam_user
+    where paper_id = #{paperId} and user_id = #{userId}
+  </select>
+
+  <select id="selectPaperCorrectUserId" parameterType="long" resultType="long">
+    select user_id
+    from oexam.exam_user
+    where paper_id = #{paperId} and `status` = 2
+  </select>
+
+  <delete id="deleteByPaperId" parameterType="long">
+    delete from oexam.exam_user
+    where paper_id = #{paperId}
+  </delete>
+
+  <select id="selectExamUserDetailList" parameterType="long" resultType="xyz.hsong.oexam.vo.ExamUserVo">
+    select
+      oexam.user.id,
+      oexam.user.email,
+      oexam.user.name,
+      oexam.user.department,
+      oexam.exam_user.status
+    from oexam.user
+      inner join oexam.exam_user on user.id = exam_user.user_id
+    where exam_user.paper_id = #{paperId}
+  </select>
+
+  <insert id="insertExamUsers" parameterType="list">
+    insert into oexam.exam_user(user_id,paper_id) values
+    <foreach collection="examUsers" item="item" separator=",">
+      (
+      #{item.userId},#{item.paperId}
+      )
+    </foreach>
+  </insert>
+
+  <delete id="deleteByUserId" parameterType="long">
+    delete from oexam.exam_user
+    where user_id = #{userId}
+  </delete>
+
+</mapper>

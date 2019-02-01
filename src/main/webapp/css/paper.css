@@ -1,0 +1,14 @@
+body{
+    background-color: #F5F5F5;
+}
+#top-bar {
+    background-color: #484848;
+    color: white;
+}
+xmp{
+    margin: 0px;
+    padding: 0px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    width:100%;
+}

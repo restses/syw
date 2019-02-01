@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理·考试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.form.min.js"></script>
+    <link type="text/css" href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="../../css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link type="text/css" href="../../css/main.css" rel="stylesheet">
+    <script type="text/javascript" src="../../js/addExam.js"></script>
+    <style>
+        xmp{
+            margin: 0px;
+            padding: 0px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div id="top-bar" class="col-xs-12">
+            <div class="col-lg-4 col-lg-offset-8 col-sm-7 col-sm-offset-5 col-md-5 col-md-offset-7 col-xs-12"
+                 id="top-bar-link">
+                <span style="cursor:pointer" onclick="javascript:window.open('../../index.html')">前台首页</span>
+                <span style="cursor:pointer" onclick="javascript:window.open('../manager.html','_self')">后台首页</span>
+                <span>当前用户：</span>
+                <span id="currentUser">Loading...</span>
+                <span id="logout" style="cursor:pointer">退出</span>
+            </div>
+        </div>
+
+        <div class="col-xs-12" id="head-bar">
+            <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="text-center">OEXAME·后台管理</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12" style="margin-top: 20px;">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>添加考试</span></h3>
+            <hr/>
+        </div>
+
+        <!--试题选择模态框-->
+        <!-- Modal -->
+        <div class="modal fade" id="questionList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">试题列表</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info col-xs-12 text-center" role="alert" id="loading">载入中...</div>
+                        <form id="questionForm">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label for="questionId">试题编号：</label>
+                                    <input type="text" id="questionId" name="questionId" class="form-control input-sm"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="questionContent">试题内容：</label>
+                                    <input id="questionContent" name="questionContent" class="form-control input-sm"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="questionType">题型：</label>
+                                    <select id="questionType" name="questionType" class="form-control input-sm">
+                                        <option selected></option>
+                                        <option value="1">单选题</option>
+                                        <option value="2">多选题</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <a href="javascript:searchQuestion();"
+                                       class="btn btn-default btn-primary btn-sm">搜索</a>
+                                    <a href="javascript:questionListReset();" class="btn btn-default btn-sm">重置</a>
+                                </div>
+                            </div>
+                        </form>
+                        <table class="table table-bordered table-hover" style='table-layout:fixed;margin-top: 10px'>
+                            <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="checkedAll" name="checkedAll"></th>
+                                <th width="10%">编号</th>
+                                <th width="10%">题型</th>
+                                <th width="75%">试题内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <label><span id="page">0</span>/<span id="totalPage">0</span></label>
+                        <a href="javascript:pagePrevious()" aria-label="Previous" class="btn btn-default">
+                            <span aria-hidden="true" class="glyphicon glyphicon-menu-left"></span>
+                        </a>
+                        <a href="javascript:pageNext()" aria-label="Next" class="btn btn-default">
+                            <span aria-hidden="true" class="glyphicon glyphicon-menu-right"></span>
+                        </a>
+                        <a href="javascript:questionSave();" type="button" class="btn btn-primary" id="btn-info-save"
+                           data-loading-text="保存中...">
+                            保存
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="form-group col-xs-12 col-sm-3">
+                <label for="title">考试名称：</label>
+                <input type="text" id="title" name="title" class="form-control input-sm"/>
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                <label for="time">答题时间：</label>
+                <div class="input-group">
+                    <input id="time" name="time" class="form-control input-sm" type="number" min="1" size="10"/>
+                    <span class="input-group-addon">分钟</span>
+                </div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                <label for="startTime">开始时间：</label>
+                <input type="text" class="form-control input-sm" id="startTime" readonly/>
+            </div>
+            <div class="form-group col-xs-12 col-sm-3">
+                <label for="endTime">结束时间：</label>
+                <input type="text" class="form-control input-sm" readonly id="endTime"/>
+            </div>
+            <div class="clearfix"></div>
+            <hr/>
+        </div>
+        <div class="alert alert-info col-xs-12 text-center" role="alert" id="saving" style="display: none">保存中...</div>
+        <table class="table table-bordered table-hover" style='table-layout:fixed;' id="choseQuestion">
+            <thead>
+            <tr>
+                <th width="10%">编号</th>
+                <th width="10%">题型</th>
+                <th width="60%">试题内容</th>
+                <th width="10%">分数/题</th>
+                <th width="10%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="pull-left" style="margin-bottom: 30px">
+            <a href="javascript:addQuestion();" class="btn btn-default">添加试题</a>
+        </div>
+        <div class="pull-right">
+            <a href="javascript:saveExam();" class="btn btn-default btn-primary">保存考试</a>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $('#startTime').datetimepicker({
+        language: 'zh',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+
+    $('#endTime').datetimepicker({
+        language: 'zh',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+</html>

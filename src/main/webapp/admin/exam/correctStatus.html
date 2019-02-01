@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>阅卷状态</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/correctStatus.js"></script>
+    <link type="text/css" href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="../../css/main.css" rel="stylesheet">
+    <style type="text/css">
+        th, td {
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        xmp{
+            margin: 0px;
+            padding: 0px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="top-bar" class="col-xs-12">
+            <div class="col-lg-4 col-lg-offset-8 col-sm-7 col-sm-offset-5 col-md-5 col-md-offset-7 col-xs-12"
+                 id="top-bar-link">
+                <span style="cursor:pointer" onclick="javascript:window.open('../../index.html')">前台首页</span>
+                <span style="cursor:pointer" onclick="javascript:window.open('../manager.html','_self')">后台首页</span>
+                <span>当前用户：</span>
+                <span id="currentUser">Loading...</span>
+                <span id="logout" style="cursor:pointer">退出</span>
+            </div>
+        </div>
+
+        <div class="col-xs-12" id="head-bar">
+            <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="text-center">OEXAME·后台管理</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12" style="margin-top: 20px;">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>阅卷状态</span></h3>
+            <hr/>
+        </div>
+
+        <div class="col-xs-12">
+            <label>考试名称：<span id="title">Loading</span></label><br/>
+            <label>考试时间：<span id="time">Loading</span></label><br/>
+            <label>开始时间：<span id="startTime">Loading</span></label><br/>
+            <label>结束时间：<span id="endTime">Loading</span></label><br/>
+            <hr/>
+        </div>
+
+
+        <div class="col-xs-12">
+            <div class="alert alert-info col-xs-12 text-center" role="alert" id="loading" style="display: none">
+                载入中...
+            </div>
+            <h3 class="text-center">考生列表</h3>
+            <table class="table table-bordered table-hover" style='table-layout:fixed;' id="examUserList">
+                <thead>
+                <tr>
+                    <th width="15%">ID</th>
+                    <th width="20%">账号</th>
+                    <th width="20%">姓名</th>
+                    <th width="20%">部门(班级)</th>
+                    <th width="15%">状态</th>
+                    <th width="10%">详情</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

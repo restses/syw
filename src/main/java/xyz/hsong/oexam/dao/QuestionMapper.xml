@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hsong.oexam.dao.QuestionMapper">
+	<resultMap id="BaseResultMap"
+		type="xyz.hsong.oexam.pojo.Question">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="ask" jdbcType="LONGVARCHAR" property="ask" />
+		<result column="analysis" jdbcType="LONGVARCHAR"
+			property="analysis" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+		<collection property="options" javaType="ArrayList"
+			ofType="xyz.hsong.oexam.pojo.Option">
+			<id column="option_id" jdbcType="BIGINT" property="id" />
+			<result column="question_id" jdbcType="BIGINT"
+				property="questionId" />
+			<result column="content" jdbcType="VARCHAR" property="content" />
+			<result column="answer" jdbcType="INTEGER" property="answer" />
+		</collection>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, ask, analysis, type, `status`, create_time, update_time
+	</sql>
+	<insert id="insertSelective"
+		parameterType="xyz.hsong.oexam.pojo.Question" keyProperty="id"
+		useGeneratedKeys="true">
+		insert into oexam.question
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="type != null">
+				`type`,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			create_time,
+
+			update_time,
+
+			<if test="ask != null">
+				ask,
+			</if>
+
+			<if test="analysis != null">
+				analysis,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			now(),
+			now(),
+			<if test="ask != null">
+				#{ask,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="analysis != null">
+				#{analysis,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select
+		question.id,
+		ask,
+		analysis,
+		type,
+		`status`,
+		update_time,
+		create_time,
+		question_id,
+		`option`.id option_id,
+		content,
+		answer
+		from oexam.question
+		inner join oexam.`option` on question.id = `option`.question_id
+		where question.id = #{id}
+	</select>
+
+	<select id="selectQuestionList"
+		resultType="xyz.hsong.oexam.pojo.Question">
+		select
+		<include refid="Base_Column_List" />
+		from oexam.question
+		order by id desc limit #{start},#{offset}
+	</select>
+
+	<select id="selectQuestion"
+		parameterType="xyz.hsong.oexam.pojo.Question"
+		resultType="xyz.hsong.oexam.pojo.Question">
+		select
+		<include refid="Base_Column_List" />
+		from oexam.question
+		<where>
+			<if test="question.id != null">
+				and id = #{question.id}
+			</if>
+			<if test="question.ask != null">
+				and ask like concat('%',#{question.ask},'%')
+			</if>
+			<if test="question.type != null">
+				and `type` = #{question.type}
+			</if>
+		</where>
+		limit #{start},#{offset}
+	</select>
+
+	<update id="updateQuestion"
+		parameterType="xyz.hsong.oexam.pojo.Question">
+		update oexam.question
+		<set>
+			<if test="ask != null">
+				ask = #{ask},
+			</if>
+			<if test="analysis != null">
+				analysis = #{analysis},
+			</if>
+			<if test="type != null">
+				`type` = #{type},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			update_time = now(),
+		</set>
+		where id = #{id}
+	</update>
+
+	<resultMap id="QuestionWithAnswerMap"
+		type="xyz.hsong.oexam.bo.QuestionBo">
+		<id column="question_id" jdbcType="BIGINT" property="id" />
+		<collection property="answers" javaType="ArrayList"
+			ofType="java.lang.Long">
+			<id column="answer_id" jdbcType="BIGINT" property="answers" />
+		</collection>
+	</resultMap>
+
+	<select id="selectAnswerByQuestionId" parameterType="list"
+		resultMap="QuestionWithAnswerMap">
+		select
+		oexam.`option`.question_id,
+		oexam.`option`.id answer_id
+		from oexam.`option`
+		where question_id in
+		<foreach collection="list" item="item" separator="," open="("
+			close=")">
+			#{item}
+		</foreach>
+		and answer=1
+	</select>
+
+	<select id="selectQuestionCount"
+		parameterType="xyz.hsong.oexam.pojo.Question" resultType="int">
+		select count(1)
+		from oexam.question
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="ask != null">
+				and ask like concat('%',#{ask},'%')
+			</if>
+			<if test="type != null">
+				and `type` = #{type}
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteQuestion" parameterType="long">
+		delete from oexam.question
+		where id = #{questionId}
+	</delete>
+
+	<resultMap id="PaperQuestionVoMap"
+		type="xyz.hsong.oexam.vo.PaperQuestionVo">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="ask" jdbcType="LONGVARCHAR" property="ask" />
+		<result column="analysis" jdbcType="LONGVARCHAR"
+			property="analysis" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<collection property="options" javaType="ArrayList"
+			ofType="xyz.hsong.oexam.pojo.Option">
+			<id column="option_id" jdbcType="BIGINT" property="id" />
+			<result column="question_id" jdbcType="BIGINT"
+				property="questionId" />
+			<result column="content" jdbcType="VARCHAR" property="content" />
+			<result column="answer" jdbcType="INTEGER" property="answer" />
+		</collection>
+	</resultMap>
+
+	<select id="selectQuestionDetail" parameterType="long"
+		resultMap="PaperQuestionVoMap">
+		select
+		question.id,
+		question.ask,
+		question.analysis,
+		question.type,
+		question.create_time,
+		question.update_time,
+		`option`.id option_id,
+		`option`.question_id,
+		`option`.content,
+		`option`.answer
+		from oexam.question
+		inner join oexam.`option` on question.id = `option`.question_id
+		where question.id = #{id}
+	</select>
+
+</mapper>

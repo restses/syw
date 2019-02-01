@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>成绩列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/scoreList.js"></script>
+    <link type="text/css" href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="../../css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="top-bar" class="col-xs-12">
+            <div class="col-lg-4 col-lg-offset-8 col-sm-7 col-sm-offset-5 col-md-5 col-md-offset-7 col-xs-12"
+                 id="top-bar-link">
+                <span style="cursor:pointer" onclick="javascript:window.open('../../index.html')">前台首页</span>
+                <span style="cursor:pointer" onclick="javascript:window.open('../manager.html','_self')">后台首页</span>
+                <span>当前用户：</span>
+                <span id="currentUser">Loading...</span>
+                <span id="logout" style="cursor:pointer">退出</span>
+            </div>
+        </div>
+
+        <div class="col-xs-12" id="head-bar">
+            <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="text-center">OEXAME·后台管理</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-12" style="margin-top: 20px;">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>成绩列表</span></h3>
+            <hr/>
+        </div>
+        <div class="alert alert-info col-xs-12 text-center" role="alert" id="loading" style="display: none">
+            载入中...
+        </div>
+
+
+        <div class="col-xs-12">
+            <label>最高分：<span id="max">0</span>分</label><br/>
+            <label>最低分：<span id="min">0</span>分</label><br/>
+            <label>平均分：<span id="avg">0</span>分</label><br/>
+        </div>
+
+        <div class="col-xs-12">
+            <h3 class="text-center">成绩列表</h3>
+            <table class="table table-bordered table-hover" style='table-layout:fixed;' id="scoreList">
+                <thead>
+                <tr>
+                    <th width="20%">ID</th>
+                    <th width="20%">姓名</th>
+                    <th width="20%">部门(班级)</th>
+                    <th width="20%">成绩</th>
+                    <th width="20%">详情</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

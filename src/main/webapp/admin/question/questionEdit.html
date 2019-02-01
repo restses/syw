@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理试题</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <link type="text/css" href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="../../css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="top-bar" class="col-xs-12">
+            <div class="col-lg-4 col-lg-offset-8 col-sm-7 col-sm-offset-5 col-md-5 col-md-offset-7 col-xs-12"
+                 id="top-bar-link">
+                <span style="cursor:pointer" onclick="javascript:window.open('../../index.html')">前台首页</span>
+                <span style="cursor:pointer" onclick="javascript:window.open('../manager.html','_self')">后台首页</span>
+                <span>当前用户：</span>
+                <span id="currentUser">Loading...</span>
+                <span id="logout" style="cursor:pointer">退出</span>
+            </div>
+        </div>
+
+        <div class="col-xs-12" id="head-bar">
+            <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="text-center">OEXAME·后台管理</h1>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="col-xs-12" style="margin-top: 20px;">
+                <h3><span class="glyphicon glyphicon-option-vertical"></span><span>修改试题</span></h3>
+                <hr/>
+            </div>
+            <div class="col-xs-12">
+                <form id="question-form">
+                    <div class="form-group">
+                        <label for="question-type" class="text-primary">试题类型:</label>
+                        <select id="question-type" name="type">
+                            <option value="1">单选题</option>
+                            <option value="2">多选题</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ask">试题描述：</label>
+                        <textarea id="ask" class="form-control" rows="2" name="ask"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>试题选项:</label>
+                        <a class="btn btn-default" id="addOption">添加选项+</a>
+                    </div>
+                    <div class="form-group">
+                    <label><span>A</span>.是否为答案？<input type="radio" name="1"/></label>
+                    <span class="glyphicon glyphicon-remove text-danger" style="cursor:pointer"></span>
+                    <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                    <label><span>B</span>.是否为答案？<input type="radio" name="1"/></label>
+                    <span class="glyphicon glyphicon-remove text-danger" style="cursor:pointer"></span>
+                    <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                    <label><span>C</span>.是否为答案？<input type="radio" name="1"/></label>
+                    <span class="glyphicon glyphicon-remove text-danger" style="cursor:pointer"></span>
+                    <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                    <label><span>D</span>.是否为答案？<input type="radio" name="1"/></label>
+                    <span class="glyphicon glyphicon-remove text-danger" style="cursor:pointer"></span>
+                    <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                </form>
+                <div class="form-group">
+                    <label for="ask">试题解析：</label>
+                    <textarea id="analysis" class="form-control" rows="2" name="analysis"></textarea>
+                </div>
+                <div class="form-group">
+                    <a href="javascript:addQuestion();" class="btn btn-default btn-primary">修改试题</a>
+                    <a href="javascript:questionReset();" class="btn btn-default">重置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

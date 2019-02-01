@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hsong.oexam.dao.UserMapper">
+	<resultMap id="BaseResultMap"
+		type="xyz.hsong.oexam.pojo.User">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="password" jdbcType="VARCHAR"
+			property="password" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="department" jdbcType="VARCHAR"
+			property="department" />
+		<result column="role" jdbcType="INTEGER" property="role" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, email, password, name, department, role, create_time, update_time
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from user
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="xyz.hsong.oexam.pojo.User"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into oexam.user (id, email, password,
+		name, department, role,
+		create_time, update_time)
+		values (#{id,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER},
+		NOW(),NOW())
+	</insert>
+	<insert id="insertSelective"
+		parameterType="xyz.hsong.oexam.pojo.User" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into oexam.`user`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="department != null">
+				department,
+			</if>
+			<if test="role != null">
+				role,
+			</if>
+
+			create_time,
+
+			update_time,
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				#{department,jdbcType=VARCHAR},
+			</if>
+			<if test="role != null">
+				#{role,jdbcType=INTEGER},
+			</if>
+			NOW(),NOW()
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="xyz.hsong.oexam.pojo.User">
+		update oexam.`user`
+		<set>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				department = #{department,jdbcType=VARCHAR},
+			</if>
+			<if test="role != null">
+				role = #{role,jdbcType=INTEGER},
+			</if>
+
+			update_time = now()
+
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="xyz.hsong.oexam.pojo.User">
+		update oexam.`user`
+		set email = #{email,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR},
+		department = #{department,jdbcType=VARCHAR},
+		role = #{role,jdbcType=INTEGER},
+		update_time = NOW()
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="checkUser" parameterType="map"
+		resultType="xyz.hsong.oexam.pojo.User">
+		select
+		<include refid="Base_Column_List" />
+		from oexam.user
+		where email = #{email} and password = #{password}
+	</select>
+
+	<select id="checkEmail" parameterType="string" resultType="int">
+		select count(1)
+		from oexam.user
+		where email = #{email}
+	</select>
+
+	<update id="resetPassword" parameterType="map">
+		update oexam.user
+		set password = #{password}, update_time = now()
+		where email = #{email}
+	</update>
+
+	<select id="checkPassword" parameterType="map" resultType="int">
+		select count(1)
+		from oexam.user
+		where email = #{email} and password = #{password}
+	</select>
+
+	<update id="updateRole" parameterType="map">
+		update oexam.user
+		set role = #{role}
+		where id = #{id}
+	</update>
+
+	<select id="selectUserList" parameterType="map"
+		resultType="xyz.hsong.oexam.pojo.User">
+		select
+		id,
+		email,
+		name,
+		department,
+		role,
+		create_time,
+		update_time
+		from oexam.user
+		<where>
+			<if test="user.id != null">
+				and id = #{user.id}
+			</if>
+			<if test="user.name != null">
+				and `name` like concat('%',#{user.name},'%')
+			</if>
+			<if test="user.department != null">
+				and department like concat('%',#{user.department},'%')
+			</if>
+		</where>
+		limit #{start}, #{offset}
+	</select>
+
+	<select id="selectUserListCount"
+		parameterType="xyz.hsong.oexam.pojo.User" resultType="int">
+		select count(1)
+		from oexam.user
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="name != null">
+				and `name` like concat('%',#{name},'%')
+			</if>
+			<if test="department != null">
+				and department like concat('%',#{department},'%')
+			</if>
+		</where>
+	</select>
+
+</mapper>

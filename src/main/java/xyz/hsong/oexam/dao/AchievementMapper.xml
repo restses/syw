@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hsong.oexam.dao.AchievementMapper">
+  <resultMap id="BaseResultMap" type="xyz.hsong.oexam.pojo.Achievement">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    <result column="paper_id" jdbcType="BIGINT" property="paperId"/>
+    <result column="question_id" jdbcType="BIGINT" property="questionId"/>
+    <result column="option_id" jdbcType="BIGINT" property="optionId"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, paper_id, question_id, option_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from achievement
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from achievement
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="xyz.hsong.oexam.pojo.Achievement" useGeneratedKeys="true" keyProperty="id">
+    insert into achievement (id, user_id, paper_id, 
+      question_id, option_id)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{paperId,jdbcType=BIGINT}, 
+      #{questionId,jdbcType=BIGINT}, #{optionId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="xyz.hsong.oexam.pojo.Achievement" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into achievement
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="paperId != null">
+        paper_id,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+      <if test="optionId != null">
+        option_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="paperId != null">
+        #{paperId,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="optionId != null">
+        #{optionId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.hsong.oexam.pojo.Achievement">
+    update achievement
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="paperId != null">
+        paper_id = #{paperId,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null">
+        question_id = #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="optionId != null">
+        option_id = #{optionId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xyz.hsong.oexam.pojo.Achievement">
+    update achievement
+    set user_id   = #{userId,jdbcType=BIGINT},
+      paper_id    = #{paperId,jdbcType=BIGINT},
+      question_id = #{questionId,jdbcType=BIGINT},
+      option_id   = #{optionId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="insertAchievement" keyProperty="id" useGeneratedKeys="true" parameterType="list">
+    insert into oexam.achievement(user_id, paper_id, question_id, option_id) values
+    <foreach collection="achievements" separator="," item="item">
+      (
+      #{item.userId},#{item.paperId},#{item.questionId},#{item.optionId}
+      )
+    </foreach>
+  </insert>
+
+  <resultMap id="QuestionWithAnswerMap" type="xyz.hsong.oexam.bo.QuestionBo">
+    <id column="question_id" jdbcType="BIGINT" property="id"/>
+    <collection property="answers" javaType="ArrayList" ofType="java.lang.Long">
+      <id column="answer_id" jdbcType="BIGINT" property="answers"/>
+    </collection>
+  </resultMap>
+
+  <select id="selectByUserIdAndPaperId" resultMap="QuestionWithAnswerMap">
+    select
+      question_id,
+      option_id answer_id
+    from oexam.achievement
+    where paper_id = #{paperId} and user_id = #{userId}
+  </select>
+
+  <select id="selectUserAnswers" parameterType="map" resultType="long">
+    select oexam.achievement.option_id
+    from oexam.achievement
+    where user_id = #{userId} and paper_id = #{paperId}
+  </select>
+
+  <delete id="deleteByQuestionId" parameterType="long">
+    delete from oexam.achievement
+    where question_id = #{questionId}
+  </delete>
+
+  <delete id="deleteByPaperId" parameterType="long">
+    delete from oexam.achievement
+    where paper_id = #{paperId}
+  </delete>
+
+  <delete id="deleteByUserIdWithPaperId" parameterType="map">
+    delete from oexam.achievement
+    where paper_id = #{paperId} and user_id = #{userId}
+  </delete>
+
+  <delete id="deleteByUserId" parameterType="long">
+    delete from oexam.achievement
+    where user_id = #{userId}
+  </delete>
+
+</mapper>

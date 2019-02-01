@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>后台管理</title>
+    <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.form.min.js"></script>
+    <script type="text/javascript" src="../js/manager.js"></script>
+    <link type="text/css" href="../css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="../css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="top-bar" class="col-xs-12">
+            <div class="col-lg-4 col-lg-offset-8 col-sm-7 col-sm-offset-5 col-md-5 col-md-offset-7 col-xs-12"
+                 id="top-bar-link">
+                <span style="cursor:pointer" onclick="javascript:window.open('../index.html')">前台首页</span>
+                <span>当前用户：</span>
+                <span id="currentUser">null</span>
+                <span id="logout" style="cursor:pointer">退出</span>
+                <span id='span-password' style="cursor:pointer" data-toggle="modal"
+                      data-target="#updatePassword">修改密码</span>
+            </div>
+        </div>
+
+        <!-- 修改密码弹框 -->
+        <div class="modal fade" id="updatePassword" tabindex="-1" role="dialog" aria-labelledby="updatePasswordLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="updatePasswordLabel">修改密码</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" method="post" action="password.do" id="updatePasswordForm">
+                            <div class="form-group">
+                                <label for="oldPassword" class="col-xs-4 control-label">旧密码：</label>
+                                <div class="col-xs-6">
+                                    <input type="password" class="form-control" id="oldPassword" name="oldPassword"
+                                           placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword" class="col-xs-4 control-label">新密码：</label>
+                                <div class="col-xs-6">
+                                    <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                           placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password_confirm" class="col-xs-4 control-label">确认密码：</label>
+                                <div class="col-xs-6">
+                                    <input type="password" class="form-control" id="password_confirm"
+                                           name="password_confirm"
+                                           placeholder="请再次输入密码">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="btn-password-save">修改密码</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12" id="head-bar">
+            <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="text-center">OEXAME·后台管理</h1>
+            </div>
+        </div>
+
+        <!--管理选项列表 -->
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-xs-12" id="question-manager">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>试题</span></h3>
+            <hr/>
+            <a href="question/addQuestion.html" class="btn btn-default" role="button">添加试题</a>
+            <a href="question/questionManager.html" class="btn btn-default" role="button">试题管理</a>
+            <a href="#" class="btn btn-default" role="button">试题正确率分析</a>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-xs-12" id="exam-manager">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>考试</span></h3>
+            <hr/>
+            <a href="exam/addExam.html" class="btn btn-default" role="button">添加考试</a>
+            <a href="exam/examManager.html" class="btn btn-default" role="button">考试管理</a>
+            <a href="exam/correct.html" class="btn btn-default" role="button">考试阅卷</a>
+            <a href="exam/mark.html" class="btn btn-default" role="button">考试成绩</a>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-xs-12" id="user-manager">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>用户</span></h3>
+            <hr/>
+            <a href="user/userManager.html" class="btn btn-default" role="button">用户管理</a>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-xs-12" id="data-manager">
+            <h3><span class="glyphicon glyphicon-option-vertical"></span><span>系统</span></h3>
+            <hr/>
+            <a href="javascript:alert('开发中...')" class="btn btn-default" role="button">数据管理</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

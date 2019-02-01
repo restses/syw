@@ -1,0 +1,44 @@
+
+#login_box {
+    background: white;
+    padding: 20px;
+    margin-top: 200px;
+}
+
+#top-bar-link span {
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 376px) {
+    #top-bar-link span {
+        margin-right: 2px;
+    }
+
+    .paper-item {
+        border-bottom: 1px #EEEEEE solid;
+    }
+
+    .paper-item a {
+        margin-bottom: 10px;
+    }
+}
+
+#top-bar {
+    background: #484848;
+    color: white;
+}
+
+#head-bar {
+    background: #428bca;
+    color: white;
+}
+
+.paper-item {
+    margin-bottom: 20px;
+    border-bottom: 1px #EEEEEE solid;
+}
+
+.paper-item a {
+    display: block;
+    margin-top: 34px;
+}

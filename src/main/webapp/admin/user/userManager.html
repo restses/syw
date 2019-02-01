@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/userManager.js"></script>
+    <link type="text/css" href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="../../css/main.css" rel="stylesheet">
+    <title>用户管理</title>
+    <style>
+        td, th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div id="top-bar" class="col-xs-12">
+            <div class="col-lg-4 col-lg-offset-8 col-sm-7 col-sm-offset-5 col-md-5 col-md-offset-7 col-xs-12"
+                 id="top-bar-link">
+                <span style="cursor:pointer" onclick="javascript:window.open('../../index.html')">前台首页</span>
+                <span style="cursor:pointer" onclick="javascript:window.open('../manager.html','_self')">后台首页</span>
+                <span>当前用户：</span>
+                <span id="currentUser">Loading...</span>
+                <span id="logout" style="cursor:pointer">退出</span>
+            </div>
+        </div>
+
+        <div class="col-xs-12" id="head-bar">
+            <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                <h1 class="text-center">OEXAME·后台管理</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="col-xs-12" style="margin-top: 20px;">
+        <h3><span class="glyphicon glyphicon-option-vertical"></span><span>用户管理</span></h3>
+        <hr/>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="alert alert-info col-xs-12 text-center" role="alert" id="loading">载入中...</div>
+        <div class="alert alert-info col-xs-12 text-center" role="alert" id="saving"
+             style="display: none">保存中...
+        </div>
+        <div class="alert alert-info col-xs-12 text-center" role="alert" id="save-success"
+             style="display: none">保存成功
+        </div>
+        <form class="form-inline text-center">
+
+            <div class="form-group">
+                <label for="id">ID：</label>
+                <input type="text" id="id" name="id" class="form-control input-sm"/>
+            </div>
+            <div class="form-group">
+                <label for="name">姓名：</label>
+                <input id="name" name="name" class="form-control input-sm"/>
+            </div>
+            <div class="form-group">
+                <label for="department">部门（班级）：</label>
+                <input id="department" name="department" class="form-control input-sm"/>
+            </div>
+            <div class="form-group">
+                <a href="javascript:getUserList();" class="btn btn-default btn-primary btn-sm">搜索</a>
+                <button type="reset" class="btn btn-default btn-sm">重置</button>
+            </div>
+
+        </form>
+
+        <div class="alert alert-info col-xs-12 text-center" role="alert" id="delete-ing" style="display: none">
+            删除中...
+        </div>
+        <div class="alert alert-success col-xs-12 text-center" role="alert" id="delete-success"
+             style="display: none">删除成功
+        </div>
+        <div class="alert alert-danger col-xs-12 text-center" role="alert" id="delete-fail" style="display: none">
+            删除失败
+        </div>
+
+        <table class="table table-bordered table-hover" style='table-layout:fixed;margin-top: 10px;' id="userList">
+            <thead>
+            <tr>
+                <th width="10%" style="text-align: center">ID</th>
+                <th width="20%" style="text-align: center">账号</th>
+                <th width="10%" style="text-align: center">姓名</th>
+                <th width="15%" style="text-align: center">部门（班级）</th>
+                <th width="10%" style="text-align: center">角色</th>
+                <th width="30%" style="text-align: center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="pull-right">
+            <label><span id="page">0</span>/<span id="totalPage">0</span></label>
+            <a href="javascript:pagePrevious()" aria-label="Previous" class="btn btn-default">
+                <span aria-hidden="true" class="glyphicon glyphicon-menu-left"></span>
+            </a>
+            <a href="javascript:pageNext()" aria-label="Next" class="btn btn-default">
+                <span aria-hidden="true" class="glyphicon glyphicon-menu-right"></span>
+            </a>
+        </div>
+    </div>
+
+    <!--修改信息模态框-->
+    <div class="modal fade" id="updateInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">修改信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <input id="updateId" style="display: none" value="">
+                        <div class="form-group">
+                            <label for="updateName" class="col-xs-4 control-label">姓名：</label>
+                            <div class="col-xs-6">
+                                <input type="text" class="form-control" id="updateName" name="name"
+                                       placeholder="请输入姓名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateDepartment" class="col-xs-4 control-label">班级（部门）：</label>
+                            <div class="col-xs-6">
+                                <input type="text" class="form-control" id="updateDepartment" name="department"
+                                       placeholder="请输入班级（部门）">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="btn-info-save" data-loading-text="保存中...">
+                        保存更改
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>
