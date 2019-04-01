@@ -6,7 +6,6 @@ import xyz.hsong.oexam.vo.PaperQuestionVo;
 import xyz.hsong.oexam.vo.PaperStatusVo;
 
 import java.util.List;
-
 public interface PaperMapper {
 
     int deleteByPrimaryKey(Long id);

@@ -1,11 +1,11 @@
 package xyz.hsong.oexam.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import xyz.hsong.oexam.pojo.Mark;
 import xyz.hsong.oexam.vo.MarkVo;
 
 import java.util.List;
-
 public interface MarkMapper {
     int deleteByPrimaryKey(Long id);
 

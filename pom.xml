@@ -26,7 +26,12 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+          <version>2.5</version>
+          <scope>provided</scope>
+      </dependency>
     <!--spring 约束包-->
     <dependency>
       <groupId>aopalliance</groupId>
@@ -177,9 +182,7 @@
       <artifactId>slf4j-api</artifactId>
       <version>1.7.25</version>
     </dependency>
-
   </dependencies>
-
   <build>
     <finalName>oexam</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
@@ -216,4 +219,5 @@
       </plugins>
     </pluginManagement>
   </build>
+
 </project>

@@ -2,12 +2,12 @@ package xyz.hsong.oexam.dao;
 
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import xyz.hsong.oexam.pojo.PaperDetail;
 import xyz.hsong.oexam.vo.QuestionWithScoreVo;
 
 import java.util.List;
 import java.util.Map;
-
 public interface PaperDetailMapper {
 
     int deleteByPrimaryKey(Long id);

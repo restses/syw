@@ -1,11 +1,11 @@
 package xyz.hsong.oexam.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import xyz.hsong.oexam.pojo.ExamUser;
 import xyz.hsong.oexam.vo.ExamUserVo;
 
 import java.util.List;
-
 public interface ExamUserMapper {
 
     int deleteByPrimaryKey(Long id);

@@ -1,10 +1,10 @@
 package xyz.hsong.oexam.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import xyz.hsong.oexam.pojo.Option;
 
 import java.util.List;
-
 public interface OptionMapper {
 
     int deleteByPrimaryKey(Long id);

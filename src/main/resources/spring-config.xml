@@ -39,13 +39,13 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation"
 			value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:mapper/*.xml"></property>
 	</bean>
 
 	<!--配置mybatis自动mapper扫描 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
 		id="scannerConfigurer">
 		<property name="basePackage" value="xyz.hsong.oexam.dao" />
-
 	</bean>
 
 	<!--开启spring注解支持 -->
